@@ -28,7 +28,6 @@ router.post('/poi', function(req, res) {
 		    if (!error) {
 		    	_.each(result.response.venues, function(v) {
 		    		if(v.location.lat != undefined && v.location.lng != undefined) {
-		    			console.log(v);
 				    	places.push({
 				    		title: v.name,
 				    		location: {

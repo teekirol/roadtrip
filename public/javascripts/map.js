@@ -5,6 +5,7 @@ var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);;
 var directionsService = new google.maps.DirectionsService();
 var map;
 var markers = [];
+var highlightIcon = { url:"http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|ff0000"};
 
 var sf = new google.maps.LatLng(37.7833, -122.4167);
 
@@ -59,28 +60,18 @@ function drawPlaces(response) {
         
         var venue = data[i];
 
-        $("#venues").append("<tr>" + 
+        $("#venues").append("<tr id='" + venue.id + "'>" + 
           "<td><a href='http://foursquare.com/v/" + venue.id + "'> " + venue.title + "</a></td>" +
           "<td>" + venue.categories.join(",") + "</td>" +
-          "</tr>")
+          "</tr>");
 
-        // var contentStr = "<h1></h1>" +
-        // "<p>Rating: " + venue.rating + " / 10 </p>" +
-        // "<p>" + venue.description + "</p>";
-        
-        // var infowindow = new google.maps.InfoWindow({
-        //   content: contentStr
-        // });
-
-        var marker = new google.maps.Marker({
+        var m = new google.maps.Marker({
           title: venue.title,
           map: map,
           position:  new google.maps.LatLng(venue.location.lat, venue.location.lng)
         });
-        // google.maps.event.addListener(marker, 'click', function() {
-        //   infowindow.open(map);
-        // });
-        markers.push(marker);
+
+        markers.push(m);
       }
     },
     error: function(data, status, e) {
@@ -108,7 +99,6 @@ function calcRoute(origin, dest, waypoint) {
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
       directionsDisplay.setDirections(response);
-      drawPlaces(response);
     } else {
       alert(status);
     }
