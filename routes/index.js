@@ -22,11 +22,17 @@ router.post('/poi', function(req, res) {
 	var places = [];
   	for(i = 0; i < pointsToSearch.length; i++) {
   		var point = pointsToSearch[i];
-		var params = { ll: point.A + "," + point.F, limit: 10, intent: "checkin" };
+		var params = { ll: point.A + "," + point.F, limit: 10, radius: 1000*offRoadDistanceKm, sortByDistance: 0 };
 		console.log("Searching " + params.ll);
-  		foursquare.getVenues(params, function(error, result) {
+  		foursquare.exploreVenues(params, function(error, result) {
 		    if (!error) {
-		    	_.each(result.response.venues, function(v) {
+
+		    	var recommended = _.find(result.response.groups, function(g) {
+		    		return g.name == 'recommended';
+		    	});
+
+		    	_.each(recommended.items, function(v) {
+		    		v = v.venue
 		    		if(v.location.lat != undefined && v.location.lng != undefined) {
 				    	places.push({
 				    		title: v.name,
@@ -40,7 +46,6 @@ router.post('/poi', function(req, res) {
 				    }
 			    });
 			    searchesCompleted++;
-			    console.log(searchesCompleted + " searches completed");
 		    } else {
 		    	console.log(" ========== ERROR ");
 		    	console.log(error);
