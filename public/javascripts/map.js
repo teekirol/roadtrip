@@ -82,7 +82,7 @@ function drawPlaces(response) {
 
 function calcRoute(origin, dest, waypoint) {
 
-  if(waypoint != undefined) {
+  if(waypoint != "") {
     waypoint = [{location: waypoint, stopover: true }];
   } else {
     waypoint = [];
