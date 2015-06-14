@@ -28,11 +28,14 @@ function initialize() {
 
 function drawPlaces(response) {
   
-  // Blow away markers    
+  // Blow away markers
   for(i = 0; i < markers.length; i++) {
     markers[i].setMap(null);
   };
   markers = [];
+
+  // Clear results table
+  $("#venues").html("");
 
   // Extract the set of points from which we will search Yelp
   var path = response.routes[0].overview_path;
@@ -53,11 +56,30 @@ function drawPlaces(response) {
     dataType: "json",
     success: function(data) {
       for(i = 0; i < data.length; i++) {
+        
+        var venue = data[i];
+
+        $("#venues").append("<tr>" + 
+          "<td><a href='http://foursquare.com/v/" + venue.id + "'> " + venue.title + "</a></td>" +
+          "<td>" + venue.categories.join(",") + "</td>" +
+          "</tr>")
+
+        // var contentStr = "<h1></h1>" +
+        // "<p>Rating: " + venue.rating + " / 10 </p>" +
+        // "<p>" + venue.description + "</p>";
+        
+        // var infowindow = new google.maps.InfoWindow({
+        //   content: contentStr
+        // });
+
         var marker = new google.maps.Marker({
-          title: data[i].title,
-          position:  new google.maps.LatLng(data[i].location.lat, data[i].location.lng)
+          title: venue.title,
+          map: map,
+          position:  new google.maps.LatLng(venue.location.lat, venue.location.lng)
         });
-        marker.setMap(map);
+        // google.maps.event.addListener(marker, 'click', function() {
+        //   infowindow.open(map);
+        // });
         markers.push(marker);
       }
     },

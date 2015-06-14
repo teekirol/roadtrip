@@ -16,27 +16,31 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/poi', function(req, res) {
-	var pointsToSearch = req.body;
+	var pointsToSearch = req.body.splice(0,4);
 	var searchesCompleted = 0;
 	console.log(pointsToSearch.length + "  places to search");
 	var places = [];
   	for(i = 0; i < pointsToSearch.length; i++) {
   		var point = pointsToSearch[i];
-		var params = { ll: point.A + "," + point.F, limit: 3, intent: "checkin", radius: offRoadDistanceKm*1000 };
+		var params = { ll: point.A + "," + point.F, limit: 10, intent: "checkin" };
 		console.log("Searching " + params.ll);
   		foursquare.getVenues(params, function(error, result) {
 		    if (!error) {
 		    	_.each(result.response.venues, function(v) {
 		    		if(v.location.lat != undefined && v.location.lng != undefined) {
+		    			console.log(v);
 				    	places.push({
 				    		title: v.name,
 				    		location: {
 				    			lat: v.location.lat,
 				    			lng: v.location.lng
-				    		}
+				    		},
+				    		id: v.id,
+				    		categories: _.map(v.categories, "name")
 				    	});
 				    }
 			    });
+			    console.log(JSON.stringify(places));
 			    searchesCompleted++;
 			    console.log(searchesCompleted + " searches completed");
 		    } else {
