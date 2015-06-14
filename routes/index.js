@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/poi', function(req, res) {
-	var pointsToSearch = req.body.splice(0,4);
+	var pointsToSearch = req.body;
 	var searchesCompleted = 0;
 	console.log(pointsToSearch.length + "  places to search");
 	var places = [];
@@ -39,7 +39,6 @@ router.post('/poi', function(req, res) {
 				    	});
 				    }
 			    });
-			    console.log(JSON.stringify(places));
 			    searchesCompleted++;
 			    console.log(searchesCompleted + " searches completed");
 		    } else {
