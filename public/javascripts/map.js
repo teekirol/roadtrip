@@ -9,7 +9,7 @@ var highlightIcon = { url:"http://chart.apis.google.com/chart?chst=d_map_pin_let
 
 var sf = new google.maps.LatLng(37.7833, -122.4167);
 
-var offRoadDistanceKm = 5;
+var offRoadDistanceKm = 10;
 
 function initialize() {
 
