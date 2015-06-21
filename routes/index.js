@@ -46,6 +46,7 @@ router.post('/poi', function(req, res) {
 				    }
 			    });
 			    searchesCompleted++;
+			    console.log(searchesCompleted);
 		    } else {
 		    	console.log(" ========== ERROR ");
 		    	console.log(error);

@@ -9,7 +9,7 @@ var highlightIcon = { url:"http://chart.apis.google.com/chart?chst=d_map_pin_let
 
 var sf = new google.maps.LatLng(37.7833, -122.4167);
 
-var offRoadDistanceKm = 10;
+var pointIntervalKm = 10;
 
 function initialize() {
 
@@ -20,10 +20,6 @@ function initialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   directionsDisplay.setMap(map);
   directionsDisplay.setPanel(document.getElementById('directionsPanel'));
-
-  google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
-    drawPlaces(directionsDisplay.getDirections());
-  });
 
 }
 
@@ -39,15 +35,18 @@ function drawPlaces(response) {
   $("#venues").html("");
 
   // Extract the set of points from which we will search Yelp
+  console.log(response);
   var path = response.routes[0].overview_path;
   var searchedPath = [];
   var currentPoint = path[0];
   for(i = 1; i < path.length; i++) {
-    if(getDistanceFromLatLonInKm(currentPoint.A, currentPoint.F, path[i].A, path[i].F) > offRoadDistanceKm) {
+    if(getDistanceFromLatLonInKm(currentPoint.A, currentPoint.F, path[i].A, path[i].F) > pointIntervalKm) {
       currentPoint = path[i];
       searchedPath.push(currentPoint);
     }
   }
+
+  console.log(searchedPath);
 
   $.ajax({
     url: "/poi", 
@@ -127,7 +126,12 @@ function deg2rad(deg) {
 }
 
 $(function() {
+  
     $('#submit').click(function() {
       calcRoute($('#origin').val(), $('#dest').val(), $("#waypoint").val());
-  });
+    });
+
+    $("#search").click(function() {
+      drawPlaces(directionsDisplay.getDirections());
+    });
 });
