@@ -23,16 +23,18 @@ function initialize() {
 
 }
 
-function drawPlaces(response) {
-  
-  // Blow away markers
+function clearResults() {
   for(i = 0; i < markers.length; i++) {
     markers[i].setMap(null);
   };
   markers = [];
-
-  // Clear results table
+   // Clear results table
   $("#venues").html("");
+}
+
+function drawPlaces(response) {
+  
+  clearResults();
 
   // Extract the set of points from which we will search Yelp
   console.log(response);
@@ -81,6 +83,8 @@ function drawPlaces(response) {
 
 function calcRoute(origin, dest, waypoint) {
 
+  clearResults();
+
   if(waypoint != "") {
     waypoint = [{location: waypoint, stopover: true }];
   } else {
@@ -126,7 +130,7 @@ function deg2rad(deg) {
 }
 
 $(function() {
-  
+
     $('#submit').click(function() {
       calcRoute($('#origin').val(), $('#dest').val(), $("#waypoint").val());
     });

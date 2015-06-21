@@ -11,18 +11,17 @@ block content
     p 
         small Note: If you search for a route that's too long, it might be a problem.
 
-    div
+    div.form-group
         label From
         input(type="text", id="origin", placeholder="Origin", value="san francisco")
-    div
+    div.form-group
         label To
-        input(type="text", id="dest", placeholder="Destination", value="")
-    div 
+        input(type="text", id="dest", placeholder="Destination", value="madonna inn")
+    div.form-group
         label Stopover
         input(type="text", id="waypoint", placeholder="Waypoint (optional)", value="")
     
-    div
-        button#submit Plot Route
-        button#search Show the Cool Places
+    button#submit.btn.btn-primary.btn-sm Plot Route
+    button#search.btn.btn-primary.btn-sm Show the Cool Places
 
     table#venues
